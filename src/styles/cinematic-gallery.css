@@ -1,0 +1,134 @@
+
+.cinema {
+  position: relative;
+  width: 100%;
+  height: 100svh;
+  overflow: hidden;
+  background: var(--color-ink);
+  color: var(--color-paper);
+}
+
+.cinema-track {
+  display: flex;
+  width: max-content;
+  height: 100%;
+  will-change: transform;
+}
+
+.cinema-panel {
+  position: relative;
+  display: flex;
+  flex: 0 0 100vw;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100vw;
+  height: 100%;
+  padding: clamp(1.25rem, 4vw, 4rem);
+}
+
+.cinema-art {
+  position: relative;
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  min-height: 0;
+  overflow: hidden;
+  background: #c7b6a1;
+  color: #191919;
+}
+
+.cinema-art--2 {
+  background: #b3bda9;
+}
+
+.cinema-art--3 {
+  background: #c6a3a0;
+}
+
+.cinema-art--4 {
+  background: #c4b9d4;
+}
+
+.cinema-index {
+  position: absolute;
+  top: 1.25rem;
+  left: 1.25rem;
+  font-size: 0.75rem;
+}
+
+.cinema-art-word {
+  font-size: clamp(4rem, 13vw, 12rem);
+  font-weight: 800;
+  letter-spacing: -0.09em;
+  line-height: 0.85;
+}
+
+.cinema-caption {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-top: 1.25rem;
+}
+
+.cinema-caption p {
+  margin: 0 0 0.5rem;
+  color: rgb(244 240 232 / 65%);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.cinema-caption h2 {
+  margin: 0;
+  font-size: clamp(1.5rem, 3vw, 3rem);
+  letter-spacing: -0.05em;
+}
+
+.cinema-caption > span {
+  font-size: 2rem;
+}
+
+@media (max-width: 640px) {
+  .cinema-panel {
+    padding: 1rem;
+  }
+
+  .cinema-art-word {
+    font-size: clamp(3.5rem, 15vw, 7rem);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cinema-track {
+    will-change: auto;
+  }
+}
+
+
+.cinema-art {
+  position: relative;
+  overflow: hidden;
+}
+
+.cinema-art-layer {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 115%;
+  height: 100%;
+  left: -7.5%;
+  will-change: transform;
+}
+
+.cinema-index {
+  position: absolute;
+  top: 1.25rem;
+  left: 1.25rem;
+  z-index: 1;
+  font-size: 0.75rem;
+}
+
