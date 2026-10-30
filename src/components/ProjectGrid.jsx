@@ -3,8 +3,10 @@ import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import projects from "../data/projects";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { SplitText } from "gsap/SplitText";
+import { Flip } from "gsap/Flip";
 
-gsap.registerPlugin(useGSAP, ScrollTrigger);
+gsap.registerPlugin(useGSAP, ScrollTrigger, SplitText, Flip);
 
 export default function ProjectGrid() {
     const section = useRef(null);
@@ -12,46 +14,79 @@ export default function ProjectGrid() {
     const artRefs = useRef([]);
 
 
+    let split, animation;
+    const group = document.querySelector(".project-grid")
 
-   
-const { contextSafe } = useGSAP(
-  () => {
-    const cards = gsap.utils.toArray(
-      ".project-card",
-      section.current
+    const { contextSafe } = useGSAP(
+
+        () => {
+
+            split && split.revert();
+            animation && animation.revert();
+            split = SplitText.create(".projects-title", { type: "chars,words,lines" })
+
+            const cards = gsap.utils.toArray(
+                ".project-card",
+                section.current
+            );
+
+            const prefersReducedMotion = window.matchMedia(
+                "(prefers-reduced-motion: reduce)"
+            ).matches;
+
+            if (prefersReducedMotion) {
+                gsap.set(cards, {
+                    autoAlpha: 1,
+                    x: 0,
+                    y: 0,
+                    scale: 1,
+                });
+
+                return;
+            }
+
+            gsap.from(cards, {
+                y: 90,
+                autoAlpha: 0,
+                scale: 0.96,
+                duration: 1.1,
+                stagger: 0.2,
+                ease: "power3.out",
+                scrollTrigger: {
+                    trigger: section.current,
+                    start: "top 35%",
+                    toggleActions: "play none none none",
+                },
+            });
+
+            animation && animation.revert();
+            animation = gsap.from(split.chars, {
+                x: 150,
+                opacity: 0,
+                duration: 0.7,
+                ease: "power4",
+                stagger: 0.04,
+                scrollTrigger : {
+                    trigger : section.current,
+                    start : "top 20%"
+                }
+            })
+
+            // const state = Flip.getState(".project-grid, .project-card");
+            // group.classList.toggle("reorder");
+
+            // Flip.from(state, {
+            //     absolute: true,
+            //     duration : 0.5,
+            //     stagger: 0.1,
+            //     ease : "power1.inOut",
+            //     scrollTrigger : 
+            // })
+
+
+        },
+        { scope: section }
     );
-
-    const prefersReducedMotion = window.matchMedia(
-      "(prefers-reduced-motion: reduce)"
-    ).matches;
-
-    if (prefersReducedMotion) {
-      gsap.set(cards, {
-        autoAlpha: 1,
-        x: 0,
-        y: 0,
-        scale: 1,
-      });
-
-      return;
-    }
-
-    gsap.from(cards, {
-      y: 90,
-      autoAlpha: 0,
-      scale: 0.96,
-      duration: 1.1,
-      stagger: 0.2,
-      ease: "power3.out",
-      scrollTrigger: {
-        trigger: section.current,
-        start: "top 35%",
-        toggleActions: "play none none none",
-      },
-    });
-  },
-  { scope: section }
-);
 
 
 

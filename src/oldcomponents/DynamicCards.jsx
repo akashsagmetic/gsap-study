@@ -89,7 +89,7 @@ const loadMore = () => {
           trigger: element,
           start: "top 90%",
           once: true,
-          markers: true,
+          // markers: true,
         },
       });
 

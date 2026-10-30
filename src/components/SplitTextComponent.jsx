@@ -1,81 +1,79 @@
-
+import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
+import { SplitText } from "gsap/SplitText";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { useRef } from "react";
 
-gsap.registerPlugin(useGSAP, ScrollTrigger);
+gsap.registerPlugin(useGSAP, SplitText, ScrollTrigger);
 
-const SplitTextComponent = ({ text, exitTrigger }) => {
-    const charsContainerRef = useRef(null);
-    const charArray = Array.from(text);
+const SplitTextComponent = ({ text, className = "", exitTrigger }) => {
+  const textRef = useRef(null);
 
+  useGSAP(() => {
+    let exitTween;
+    const split = SplitText.create(textRef.current, {
+      type: "chars",
+      aria: "auto",
+      onSplit(self) {
+        const getCharacterMotion = (index) => {
+          const pattern = index % 3;
 
-   
-useGSAP(() => {
-  const chars = gsap.utils.toArray(
-    ".split-char",
-    charsContainerRef.current
-  );
+          if (pattern === 0) return { x: -95, y: 0 };
+          if (pattern === 1) return { x: 0, y: -120 };
 
-  const getCharacterMotion = (index) => {
-    const pattern = index % 3;
+          return { x: 0, y: 90 };
+        };
 
-    if (pattern === 0) return { x: -95, y: 0 };
-    if (pattern === 1) return { x: 0, y: -120 };
+        const entranceTween = gsap.from(self.chars, {
+          x: (index) => getCharacterMotion(index).x,
+          y: (index) => getCharacterMotion(index).y,
+          autoAlpha: 0,
+          duration: 1.2,
+          stagger: 0.035,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: textRef.current,
+            start: "top 85%",
+            once: true
+          }
+        });
 
-    return { x: 0, y: 90 };
-  };
+        exitTween?.scrollTrigger?.kill();
+        exitTween?.kill();
 
-  // Entrance: play once and settle.
-  gsap.from(chars, {
-    x: (index) => getCharacterMotion(index).x,
-    y: (index) => getCharacterMotion(index).y,
-    autoAlpha: 0,
-    duration: 1.2,
-    stagger: 0.035,
-    ease: "power3.out",
-    scrollTrigger: {
-      trigger: charsContainerRef.current,
-      start: "top 80%",
-      once: true,
-    },
-  });
-
-  // Exit: wait until the complete heading leaves the viewport.
-  gsap.to(chars, {
+      exitTween = gsap.fromTo(
+  self.chars,
+  {
+    x: 0,
+    y: 0,
+    autoAlpha: 1,
+  },
+  {
     x: (index) => getCharacterMotion(index).x,
     y: (index) => getCharacterMotion(index).y,
     autoAlpha: 0,
     duration: 0.7,
     stagger: 0.025,
     ease: "power2.in",
+    immediateRender: false,
     scrollTrigger: {
-      trigger: exitTrigger.current,
-      start: "bottom top",
+      trigger: exitTrigger?.current || textRef.current,
+      start: "top 20%",
+      end: "top top",
       toggleActions: "play none none reverse",
+      // markers: true,
     },
-  });
-}, { scope: charsContainerRef });
+  }
+);
+        return entranceTween
 
+      },
+    });
 
+    return () => split.revert();
+  }, { scope: textRef });
 
-
-
-
-    return (
-        <span>
-            <span className="sr-only">{text}</span>
-
-            <span aria-hidden="true" ref={charsContainerRef}>
-                {charArray.map((char, index) => (
-                    <span className="split-char" key={index}>
-                        {char}
-                    </span>
-                ))}
-            </span>
-        </span>
-    );
+  return <span ref={textRef} className={className}>{text}</span>;
 };
 
 export default SplitTextComponent;

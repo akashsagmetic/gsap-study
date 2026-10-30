@@ -107,10 +107,7 @@
 }
 
 
-.cinema-art {
-  position: relative;
-  overflow: hidden;
-}
+
 
 .cinema-art-layer {
   position: absolute;
@@ -124,11 +121,5 @@
   will-change: transform;
 }
 
-.cinema-index {
-  position: absolute;
-  top: 1.25rem;
-  left: 1.25rem;
-  z-index: 1;
-  font-size: 0.75rem;
-}
+
 

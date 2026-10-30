@@ -1,9 +1,10 @@
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { SplitText } from 'gsap/SplitText'
 import React, { useRef } from 'react'
 
-gsap.registerPlugin(useGSAP, ScrollTrigger)
+gsap.registerPlugin(useGSAP, ScrollTrigger, SplitText)
 const SiteFooter = () => {
     const footer = useRef(null);
     const contactLink = useRef(null);
@@ -12,6 +13,11 @@ const SiteFooter = () => {
     const { contextSafe } = useGSAP(() => {
         const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce").matches
         if (prefersReducedMotion) return;
+
+        let split, animation;
+        split && split.revert();
+        animation && animation.revert();
+        split = SplitText.create(".footer-title", { type: "chars,words,lines" })
 
         gsap.from(".footer-reveal", {
             y: 35,
@@ -23,6 +29,19 @@ const SiteFooter = () => {
                 trigger: footer.current,
                 start: "top 80%",
                 toggleActions: "play none none none"
+            }
+        })
+
+        animation = gsap.from(split.words, {
+            y: -100,
+            opacity: 0,
+            rotation: "random(-80, 80)",
+            duration: 0.7,
+            ease: "back",
+            stagger: 0.15,
+            scrollTrigger : {
+                trigger : footer.current,
+                start : "top 20%"
             }
         })
 

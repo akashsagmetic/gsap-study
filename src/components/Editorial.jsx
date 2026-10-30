@@ -2,13 +2,15 @@ import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { useRef } from "react";
 import SplitTextComponent from "./SplitTextComponent";
+import { SplitText } from "gsap/SplitText";
 
 
-gsap.registerPlugin(useGSAP)
+gsap.registerPlugin(useGSAP, SplitText)
 
 const Editorial = () => {
     const hero = useRef(null)
     const heroTitleRef = useRef(null);
+
 
     useGSAP(() => {
         const prefersReducedMotion = window.matchMedia(
@@ -46,16 +48,16 @@ const Editorial = () => {
                 y: 18,
                 autoAlpha: 0,
             })
-            .from(
-                ".hero-title",
-                {
-                    x: -70,
-                    autoAlpha: 0,
-                    duration: 1,
-                    ease: "power4.out",
-                },
-                "-=0.4"
-            )
+            // .from(
+            //     ".hero-title",
+            //     {
+            //         x: -70,
+            //         autoAlpha: 0,
+            //         duration: 1,
+            //         ease: "power4.out",
+            //     },
+            //     "-=0.4"
+            // )
             .from(
                 ".hero-description, .hero-cta",
                 {
@@ -74,6 +76,19 @@ const Editorial = () => {
                 },
                 "-=0.65"
             );
+
+        let split, animation;
+        split && split.revert();
+        animation && animation.revert();
+        split = SplitText.create(".hero-shape", { type: "lines" })
+        animation = intro.from(split.lines, {
+            rotation: -100,
+            transformOrigin: "50%, 50%, -160px",
+            opacity: 0,
+            duration: 0.8,
+            ease: "power3",
+            stagger: 0.25
+        })
 
 
     }, { scope: hero })
@@ -116,7 +131,7 @@ const Editorial = () => {
                 </div>
 
                 <div className="hero-visual" aria-hidden="true">
-                    <div className="hero-shape">
+                    <div className="hero-shape" >
                         <span>FORM</span>
                         <span>MEETS</span>
                         <span>MOTION</span>

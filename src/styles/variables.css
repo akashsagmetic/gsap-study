@@ -1,0 +1,45 @@
+:root {
+  /* Colors */
+  --color-bg: #080808;
+  --color-text: #f1f0eb;
+  --color-accent: #ff5a1f;
+  --color-muted: #858585;
+  --color-surface: #151515;
+  --color-border: rgb(241 240 235 / 15%);
+
+  /* Legacy compatibility */
+  --color-paper: var(--color-text);
+  --color-ink: var(--color-bg);
+
+  /* Typography */
+  --font-display: "Space Grotesk", sans-serif;
+  --font-body: "DM Sans", sans-serif;
+  --font-mono: monospace;
+
+  /* Layout */
+  --page-gutter: clamp(1.25rem, 5vw, 5rem);
+  --content-max: 1600px;
+
+  /* Spacing */
+  --space-sm: 0.75rem;
+  --space-md: 1.5rem;
+  --space-lg: 3rem;
+  --space-xl: 6rem;
+  --space-2xl: 10rem;
+
+  /* Legacy spacing compatibility */
+  --space-2: 1rem;
+  --space-3: 1.5rem;
+  --space-5: 3rem;
+  --space-6: 5rem;
+  --space-7: 8rem;
+
+  /* Motion */
+  --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-smooth: cubic-bezier(0.22, 1, 0.36, 1);
+  --duration-fast: 250ms;
+--duration-medium: 600ms;
+
+  /* Legacy motion compatibility */
+  --ease-editorial: var(--ease-smooth);
+}
